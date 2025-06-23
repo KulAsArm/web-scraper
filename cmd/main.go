@@ -27,29 +27,24 @@ func setRating(films *[]models.FilmModel, service *services.KinopoiskAPI) error 
 }
 
 func main() {
-	if err := godotenv.Load(); err != nil {
-		log.Println(err)
+	if err := godotenv.Load("./config/.env"); err != nil {
+		log.Fatal(err)
 	}
 	config, c_err := utils.LoadConfig()
 	if c_err != nil {
-		log.Println(c_err)
+		log.Fatal(c_err)
 	}
-	log.Println(config)
 	cn := cron.New()
 	defer cn.Stop()
 
 	_, cn_err := cn.AddFunc(config.CronTime, func() {
-		log.Println("Start")
 		kinopoisk := services.InitKinopoiskInterface(config.KinopoiskURL, os.Getenv("TOKEN"), 10)
-		log.Println(kinopoisk)
-		log.Println()
 
 		chatID, ch_err := strconv.Atoi(os.Getenv("CHAT_ID"))
 		if ch_err != nil {
 			log.Fatal(ch_err)
 		}
 		tg := services.NewTelegramInterface(os.Getenv("BOT_TOKEN"), int64(chatID))
-		log.Println(tg)
 		tomorrowFilms := processer.ScrapingFilm(config.MetropolicTomorrowURL)
 
 		setRating(tomorrowFilms, kinopoisk)
