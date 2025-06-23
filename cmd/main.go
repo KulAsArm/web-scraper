@@ -27,8 +27,8 @@ func setRating(films *[]models.FilmModel, service *services.KinopoiskAPI) error 
 }
 
 func main() {
-	if err := godotenv.Load("./config/.env"); err != nil {
-		log.Fatal(err)
+	if err := godotenv.Load(); err != nil {
+		log.Println(err)
 	}
 	config, c_err := utils.LoadConfig()
 	if c_err != nil {
