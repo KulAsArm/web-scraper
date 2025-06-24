@@ -4,7 +4,6 @@ import (
 	"log"
 	"os"
 	"strconv"
-	"time"
 	"web-scraper/internal/models"
 	"web-scraper/internal/processer"
 	"web-scraper/internal/services"
@@ -52,7 +51,6 @@ func main() {
 		tg.SendMessage("\n🍿 Расаписание фильмов на завтра в Метрополисе 🍿")
 		for _, film := range *tomorrowFilms {
 			tg.SendMessage(utils.CreateMessage(film))
-			time.Sleep(30 * 10 * time.Second)
 
 		}
 	})
